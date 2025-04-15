@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Searchbar() {
   const [search, setSearch] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -20,6 +21,11 @@ export default function Searchbar() {
   const onSubmit = () => {
     router.push(`/search?q=${search}`);
   };
+
+  useEffect(() => {
+    setSearch(searchParams.get("q") || "");
+    return () => setSearch("");
+  }, []);
 
   return (
     <div>
