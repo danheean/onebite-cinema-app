@@ -36,8 +36,8 @@ export default function RootLayout({
             <Link href="/">🎬 ONEBITE CINEMA</Link>
           </header>
           <main>{children}</main>
+          <Footer />
         </div>
-        <Footer />
       </body>
     </html>
   );
