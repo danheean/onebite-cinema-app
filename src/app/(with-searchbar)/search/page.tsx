@@ -1,18 +1,19 @@
-import ClientComponents from "@/components/client-components";
+import movies from "@/mock/movies.json";
+import MovieItem from "@/components/movie-item";
+import style from "./page.module.css";
 
-export default async function Page({
+export default function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ q: string }>;
+  searchParams: {
+    q?: string;
+  };
 }) {
-  const { q } = await searchParams;
-
   return (
-    <div>
-      Search : {q}
-      <ClientComponents>
-        <></>
-      </ClientComponents>
+    <div className={style.container}>
+      {movies.map((movie) => (
+        <MovieItem key={movie.id} {...movie} />
+      ))}
     </div>
   );
 }
