@@ -4,6 +4,7 @@ import Searchbar from "../../components/searchbar";
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div>
+      <div style={{ display: "none" }}>{new Date().toLocaleString()}</div>
       <Suspense fallback={<div>Loading...</div>}>
         <Searchbar />
       </Suspense>
