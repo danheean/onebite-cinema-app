@@ -11,7 +11,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <div className={style.container}>
-          <header>
+          <header className={style.header}>
             <Link href="/">🎬 ONEBITE CINEMA</Link>
           </header>
           <main>{children}</main>
