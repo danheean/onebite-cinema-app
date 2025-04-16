@@ -5,7 +5,7 @@ import { MovieData } from "@/types";
 async function AllRandomMovies() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/movies/random`,
-    { cache: "no-store" }
+    { next: { revalidate: 5 } }
   );
   if (!response.ok) {
     return <div>오류가 발생했습니다...</div>;
@@ -25,7 +25,7 @@ async function AllRandomMovies() {
 
 async function AllMovies() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`, {
-    next: { revalidate: 10 },
+    cache: "force-cache",
   });
   if (!response.ok) {
     return <div>오류가 발생했습니다...</div>;

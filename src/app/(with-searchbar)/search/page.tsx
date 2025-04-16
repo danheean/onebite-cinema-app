@@ -1,16 +1,16 @@
 import MovieItem from "@/components/movie-item";
 import style from "./page.module.css";
+import { MovieData } from "@/types";
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: {
-    q?: string;
-  };
+  searchParams: Promise<{ q: string }>;
 }) {
+  const { q } = await searchParams;
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/movies/search?q=${searchParams.q}`,
-    { cache: "no-store" }
+    `${process.env.NEXT_PUBLIC_API_URL}/movies/search?q=${q}`,
+    { cache: "force-cache" }
   );
   if (!response.ok) {
     return <div>오류가 발생했습니다...</div>;

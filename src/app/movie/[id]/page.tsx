@@ -1,17 +1,37 @@
 import { MovieData } from "@/types";
 import style from "./page.module.css";
+import { notFound } from "next/navigation";
+
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`, {
+    cache: "force-cache",
+  });
+  if (!response.ok) {
+    return [];
+  }
+  const movies: MovieData[] = await response.json();
+  return movies.map((movie) => ({
+    id: movie.id.toString(),
+  }));
+}
 
 export default async function Page({
   params,
 }: {
-  params: { id: string | string[] };
+  params: Promise<{ id: string | string[] }>;
 }) {
+  const { id } = await params;
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/movies/${params.id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/movies/${id}`,
     { cache: "force-cache" }
   );
 
   if (!response.ok) {
+    if (response.status === 404) {
+      notFound();
+    }
     return <div>오류가 발생했습니다...</div>;
   }
 

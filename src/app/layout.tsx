@@ -5,9 +5,7 @@ import { MovieData } from "@/types";
 
 async function Footer() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`, {
-    next: {
-      revalidate: 10,
-    },
+    cache: "force-cache",
   });
 
   if (!response.ok) {
