@@ -1,6 +1,16 @@
 import MovieItem from "@/components/movie-item";
 import style from "./page.module.css";
 import { MovieData } from "@/types";
+import { delay } from "@/util/delay";
+import { Suspense } from "react";
+import {
+  MovieListSkeleton,
+  MovieListRepoSkeleton,
+} from "@/components/skeleton/movie-list-skeleton";
+import {
+  MovieItemRepoSkeleton,
+  MovieItemSkeleton,
+} from "@/components/skeleton/movie-item-skeleton";
 
 // export const dynamic = "force-static";
 // 특별하지 않는 경우 강제로 설정할 필요가 없다.
@@ -13,6 +23,7 @@ import { MovieData } from "@/types";
 // 4. error : 페이지를 강제로 Static 페이지로 설정 (설정하면 안되는 경우는 빌드 오류 발생)
 
 async function AllRandomMovies() {
+  await delay(3000);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/movies/random`,
     { next: { revalidate: 5 } }
@@ -25,15 +36,16 @@ async function AllRandomMovies() {
   // console.log(allRandomMovies);
 
   return (
-    <div className={style.movie_recommend_list}>
+    <>
       {allRandomMovies.map((movie) => (
         <MovieItem key={movie.id} {...movie} />
       ))}
-    </div>
+    </>
   );
 }
 
 async function AllMovies() {
+  await delay(1500);
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`, {
     cache: "force-cache",
   });
@@ -44,24 +56,34 @@ async function AllMovies() {
   // console.log(allMovies);
 
   return (
-    <div className={style.movie_list}>
+    <>
       {allMovies.map((movie) => (
         <MovieItem key={movie.id} {...movie} />
       ))}
-    </div>
+    </>
   );
 }
+
+export const dynamic = "force-dynamic";
 
 export default function Home() {
   return (
     <div className={style.container}>
       <section>
         <h3>지금 가장 추천하는 영화</h3>
-        <AllRandomMovies />
+        <div className={style.movie_recommend_list}>
+          <Suspense fallback={<MovieListRepoSkeleton count={3} />}>
+            <AllRandomMovies />
+          </Suspense>
+        </div>
       </section>
       <section>
         <h3>등록된 모든 영화</h3>
-        <AllMovies />
+        <div className={style.movie_list}>
+          <Suspense fallback={<MovieListSkeleton count={10} />}>
+            <AllMovies />
+          </Suspense>
+        </div>
       </section>
     </div>
   );

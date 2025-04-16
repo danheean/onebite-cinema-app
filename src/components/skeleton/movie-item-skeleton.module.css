@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 21px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.cover_img_container {
+  width: 138px;
+  height: 198px;
+  background-color: rgb(220, 220, 220);
+}
+
+.cover_img_repo_container {
+  width: 245px;
+  height: 350px;
+  background-color: rgb(220, 220, 220);
+}
