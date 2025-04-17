@@ -7,10 +7,6 @@ import {
   MovieListSkeleton,
   MovieListRepoSkeleton,
 } from "@/components/skeleton/movie-list-skeleton";
-import {
-  MovieItemRepoSkeleton,
-  MovieItemSkeleton,
-} from "@/components/skeleton/movie-item-skeleton";
 
 // export const dynamic = "force-static";
 // 특별하지 않는 경우 강제로 설정할 필요가 없다.
@@ -26,7 +22,8 @@ async function AllRandomMovies() {
   await delay(5000);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/movies/random`,
-    { next: { revalidate: 5 } }
+    { cache: "no-store" }
+    // { next: { revalidate: 3 } }
   );
   if (!response.ok) {
     return <div>오류가 발생했습니다...</div>;
