@@ -1,6 +1,8 @@
-import { MovieData } from "@/types";
+import { MovieData, ReviewData } from "@/types";
 import style from "./page.module.css";
 import { notFound } from "next/navigation";
+import ReviewItem from "@/components/review-item";
+import ReviewEditor from "@/components/review-editor";
 
 // export const dynamicParams = false;
 
@@ -17,14 +19,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string | string[] }>;
-}) {
-  const { id } = await params;
+async function MovieDetail({ movieId }: { movieId: string }) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/movies/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/movies/${movieId}`,
     { cache: "force-cache" }
   );
 
@@ -50,26 +47,55 @@ export default async function Page({
 
   return (
     <>
-      <div className={style.container}>
+      <section>
         <div
           className={style.cover_img_container}
           style={{ backgroundImage: `url('${posterImgUrl}')` }}
         >
           <img src={posterImgUrl} alt={title} />
         </div>
-
         <div className={style.title}>{title}</div>
-
         <div className={style.detail}>
           {releaseDate} / {genres} / {runtime}분
         </div>
-
         <div className={style.detail}>{company}</div>
-
         <div className={style.subTitle}>{subTitle}</div>
-
         <div className={style.description}>{description}</div>
-      </div>
+      </section>
     </>
+  );
+}
+
+async function ReviewList({ movieId }: { movieId: string }) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/review/movie/${movieId}`,
+    {
+      next: {
+        tags: [`review-${movieId}`],
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Review fetch failed ; ${response.statusText}`);
+  }
+
+  const reviews = await response.json();
+  return (
+    <section>
+      {reviews.map((review: ReviewData) => (
+        <ReviewItem key={`review-item-${review.id}`} {...review} />
+      ))}
+    </section>
+  );
+}
+
+export default function Page({ params }: { params: { id: string } }) {
+  return (
+    <div className={style.container}>
+      <MovieDetail movieId={params.id} />
+      <ReviewEditor movieId={params.id} />
+      <ReviewList movieId={params.id} />
+    </div>
   );
 }
