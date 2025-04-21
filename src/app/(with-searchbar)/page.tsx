@@ -1,7 +1,6 @@
 import MovieItem from "@/components/movie-item";
 import style from "./page.module.css";
 import { MovieData } from "@/types";
-import { delay } from "@/util/delay";
 import { Suspense } from "react";
 import {
   MovieListSkeleton,

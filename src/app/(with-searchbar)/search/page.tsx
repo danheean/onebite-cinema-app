@@ -1,10 +1,8 @@
 import MovieItem from "@/components/movie-item";
 import style from "./page.module.css";
 import { MovieData } from "@/types";
-import { delay } from "@/util/delay";
 import { Suspense } from "react";
 import { MovieListRepoSkeleton } from "@/components/skeleton/movie-list-skeleton";
-import { Metadata } from "next";
 
 // export const dynamic = "force-static";
 // 정적으로 변경하면 검색 결과가 제대로 나오지 않는 부작용이 있다.

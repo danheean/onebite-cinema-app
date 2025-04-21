@@ -84,6 +84,7 @@ async function ReviewList({ movieId }: { movieId: string }) {
   );
 
   if (!response.ok) {
+    console.log(`${process.env.NEXT_PUBLIC_API_URL}/review/movie/${movieId}`);
     throw new Error(`Review fetch failed ; ${response.statusText}`);
   }
 
