@@ -4,6 +4,7 @@ import { MovieData } from "@/types";
 import { delay } from "@/util/delay";
 import { Suspense } from "react";
 import { MovieListRepoSkeleton } from "@/components/skeleton/movie-list-skeleton";
+import { Metadata } from "next";
 
 // export const dynamic = "force-static";
 // 정적으로 변경하면 검색 결과가 제대로 나오지 않는 부작용이 있다.
@@ -27,6 +28,23 @@ async function SearchResult({ q }: { q: string }) {
       ))}
     </>
   );
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+  return {
+    title: `한입 시네마 - ${q}`,
+    description: `${q} 검색 결과입니다.`,
+    openGraph: {
+      title: `한입 시네마 - ${q}`,
+      description: `${q} 검색 결과입니다.`,
+      images: ["/thumbnail.png"],
+    },
+  };
 }
 
 export default async function Page({

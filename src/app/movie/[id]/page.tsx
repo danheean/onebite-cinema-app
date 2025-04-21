@@ -3,6 +3,7 @@ import style from "./page.module.css";
 import { notFound } from "next/navigation";
 import ReviewItem from "@/components/review-item";
 import ReviewEditor from "@/components/review-editor";
+import Image from "next/image";
 
 // export const dynamicParams = false;
 
@@ -53,7 +54,12 @@ async function MovieDetail({ movieId }: { movieId: string }) {
           className={style.cover_img_container}
           style={{ backgroundImage: `url('${posterImgUrl}')` }}
         >
-          <img src={posterImgUrl} alt={title} />
+          <Image
+            src={posterImgUrl}
+            width={245}
+            height={350}
+            alt={`영화 ${title}의 포스터 이미지`}
+          />
         </div>
         <div className={style.title}>{title}</div>
         <div className={style.detail}>
@@ -89,6 +95,34 @@ async function ReviewList({ movieId }: { movieId: string }) {
       ))}
     </section>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/movies/${id}`,
+    { cache: "force-cache" }
+  );
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  const movie: MovieData = await response.json();
+  return {
+    title: `${movie.title} - 한입 시네마`,
+    description: `${movie.description}`,
+    openGraph: {
+      title: `${movie.title} - 한입 시네마`,
+      description: `${movie.description}`,
+      images: [movie.posterImgUrl],
+    },
+  };
 }
 
 export default async function Page({
