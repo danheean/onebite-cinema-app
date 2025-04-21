@@ -33,6 +33,7 @@ async function MovieDetail({ movieId }: { movieId: string }) {
   }
 
   const movie: MovieData = await response.json();
+  // console.log(movie);
 
   const {
     title,
@@ -90,12 +91,17 @@ async function ReviewList({ movieId }: { movieId: string }) {
   );
 }
 
-export default function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   return (
     <div className={style.container}>
-      <MovieDetail movieId={params.id} />
-      <ReviewEditor movieId={params.id} />
-      <ReviewList movieId={params.id} />
+      <MovieDetail movieId={id} />
+      <ReviewEditor movieId={id} />
+      <ReviewList movieId={id} />
     </div>
   );
 }

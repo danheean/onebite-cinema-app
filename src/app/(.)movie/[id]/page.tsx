@@ -1,3 +1,10 @@
-export default function Page() {
-  return <div>가로채기 성공!</div>;
+import MoviePage from "@/app/movie/[id]/page";
+import Modal from "@/components/modal";
+
+export default function Page(props: any) {
+  return (
+    <Modal>
+      <MoviePage {...props} />
+    </Modal>
+  );
 }
