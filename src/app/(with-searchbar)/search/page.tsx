@@ -9,7 +9,7 @@ import { MovieListRepoSkeleton } from "@/components/skeleton/movie-list-skeleton
 // 정적으로 변경하면 검색 결과가 제대로 나오지 않는 부작용이 있다.
 
 async function SearchResult({ q }: { q: string }) {
-  await delay(1500);
+  // await delay(1500);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/movies/search?q=${q}`,
     { cache: "force-cache" }

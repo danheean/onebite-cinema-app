@@ -19,7 +19,7 @@ import {
 // 4. error : 페이지를 강제로 Static 페이지로 설정 (설정하면 안되는 경우는 빌드 오류 발생)
 
 async function AllRandomMovies() {
-  await delay(5000);
+  // await delay(5000);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/movies/random`,
     { cache: "no-store" }
@@ -42,7 +42,7 @@ async function AllRandomMovies() {
 }
 
 async function AllMovies() {
-  await delay(1500);
+  // await delay(1500);
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`, {
     cache: "force-cache",
   });
